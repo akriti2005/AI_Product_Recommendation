@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<title>AI Product Recommendation System</title>
+
+<style>
+
+body{
+font-family: Arial, sans-serif;
+background:#f2f2f2;
+text-align:center;
+margin:0;
+padding:0;
+}
+
+.container{
+background:white;
+width:520px;
+margin:auto;
+padding:30px;
+border-radius:10px;
+box-shadow:0px 0px 10px grey;
+margin-top:40px;
+}
+
+input{
+width:90%;
+padding:10px;
+margin:8px;
+border-radius:5px;
+border:1px solid #ccc;
+}
+
+button{
+background:#ff9900;
+border:none;
+padding:10px 20px;
+font-size:16px;
+cursor:pointer;
+border-radius:5px;
+}
+
+button:hover{
+background:#e68a00;
+}
+
+.products{
+margin-top:20px;
+}
+
+.card{
+background:white;
+padding:15px;
+margin:10px;
+border-radius:10px;
+box-shadow:0px 2px 8px rgba(0,0,0,0.2);
+font-weight:bold;
+transition:0.3s;
+}
+
+.card:hover{
+transform:scale(1.05);
+}
+
+.explain{
+background:#eef6ff;
+padding:15px;
+margin-top:20px;
+border-radius:8px;
+box-shadow:0px 0px 5px grey;
+}
+
+.graph{
+margin-top:20px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>AI Product Recommendation System</h2>
+
+<form action="/predict" method="post">
+
+<input type="number" name="clicks" placeholder="Clicks on similar products" required>
+
+<input type="number" name="purchased" placeholder="Purchased similar products" required>
+
+<input type="number" step="0.1" name="avg_rating" placeholder="Average rating given to similar products" required>
+
+<input type="number" name="median_price" placeholder="Median purchasing price (₹)" required>
+
+<input type="number" step="0.1" name="rating" placeholder="Product rating" required>
+
+<input type="number" step="0.1" name="sentiment" placeholder="Customer review sentiment score" required>
+
+<input type="number" name="price" placeholder="Product price (₹)" required>
+
+<br><br>
+
+<button type="submit">Predict Recommendation</button>
+
+</form>
+
+{% if prediction %}
+
+<h3>Recommendation Probability: {{ prediction }}</h3>
+
+{% endif %}
+
+{% if products %}
+
+<div class="products">
+
+<h3>Recommended Products</h3>
+
+{% for p in products %}
+
+<div class="card">
+<h4>{{ p }}</h4>
+<p>Highly recommended for you</p>
+</div>
+
+{% endfor %}
+
+</div>
+
+{% endif %}
+
+{% if ai_reason %}
+
+<div class="explain">
+
+<h3>AI Explanation</h3>
+
+<p>{{ ai_reason }}</p>
+
+</div>
+
+{% endif %}
+
+{% if explanation %}
+
+<div class="explain">
+
+<h3>Why this recommendation?</h3>
+
+<ul>
+
+{% for e in explanation %}
+
+<li>{{ e }}</li>
+
+{% endfor %}
+
+</ul>
+
+</div>
+
+{% endif %}
+
+{% if shap_plot %}
+
+<div class="graph">
+
+<h3>Feature Impact Graph</h3>
+
+<img src="{{ shap_plot }}" width="420">
+
+</div>
+
+{% endif %}
+
+</div>
+
+</body>
+</html>
